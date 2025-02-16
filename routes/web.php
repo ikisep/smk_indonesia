@@ -5,8 +5,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\guruController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\GradeController;
+use App\Http\Controllers\GurusController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\MuridController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +33,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // Middleware untuk admin dan guru
 Route::middleware(['auth', 'role:admin,guru'])->group(function () {
     Route::get('/admin/kelas', [NilaiController::class, 'index'])->name('kelas.list');
+    Route::get('/admin/murid', [NilaiController::class, 'index'])->name('murid');
     Route::get('/admin/kelas/{class?}', [NilaiController::class, 'showClass'])->name('kelas.show');
     Route::get('/admin/nilai/{id}', [NilaiController::class, 'showStudent'])->name('admin.nilai');
     Route::get('/admin/siswa/{id}', [NilaiController::class, 'showStudent'])->name('siswa.nilai');
@@ -53,7 +58,7 @@ Route::get('/admin/data_kelas', [GuruController::class, 'dataKelas'])->name('adm
 
 
 // Route tambahan lainnya
-Route::resource('/guru', guruController::class);
+Route::resource('/guru', GurusController::class);
 Route::resource('/mapel', MapelController::class);
 
 // Route untuk input nilai
@@ -61,3 +66,8 @@ Route::get('/user', [NilaiController::class, 'index']);
 Route::get('/input-nilai', [NilaiController::class, 'create']);
 Route::post('/simpan-nilai', [NilaiController::class, 'store']);
 Route::get('/cek-nilai', [NilaiController::class, 'show']);
+
+Route::resource('users', UsersController::class);
+Route::resource('gallery', GalleryController::class);
+Route::resource('murid', MuridController::class);
+

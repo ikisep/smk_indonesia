@@ -1,4 +1,4 @@
-{{-- <aside class="w-64 min-h-screen bg-gray-900 text-white shadow-lg">
+<aside class="w-64 min-h-screen bg-gray-900 text-white shadow-lg">
     <!-- Profil User -->
     <div class="flex flex-col items-center p-5 border-b border-gray-700">
         <img src="#" alt="User Avatar" class="w-14 h-14 rounded-full border-2 border-gray-500">
@@ -47,4 +47,4 @@
             </li>
         </ul>
     </nav>
-</aside> --}}
+</aside>

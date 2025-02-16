@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Grade;
+use App\Models\Mapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,41 +25,44 @@ class NilaiController extends Controller
     }
 
     public function showStudent($id)
-    {
-        // Menampilkan nilai seorang siswa
-        $student = User::findOrFail($id);
-        $grades = Grade::where('student_id', $id)->get();
-        return view('admin.nilai_siswa', compact('student', 'grades'));
-    }
+{
+    $student = User::findOrFail($id);
+    $grades = Grade::where('student_id', $id)->with('mapel')->get(); // Ambil data nilai dengan mata pelajaran
 
-    public function create()
+    return view('admin.nilai_siswa', compact('student', 'grades'));
+}
+
+
+public function create()
 {
     // Ambil daftar kelas unik dari siswa
     $classes = User::where('role', 'siswa')->whereNotNull('class')->select('class')->distinct()->get();
     $students = User::where('role', 'siswa')->get(); // Ambil semua siswa
+    $mapels = Mapel::all(); // Ambil semua mata pelajaran
 
-    return view('admin.input_nilai', compact('classes', 'students'));
+    return view('admin.input_nilai', compact('classes', 'students', 'mapels'));
 }
 
 
-    public function store(Request $request)
+public function store(Request $request)
 {
     // Validasi input
     $request->validate([
         'student_id' => 'required',
-        'subject' => 'required',
+        'mapel_id' => 'required|exists:mata_pelajaran,id',
         'uts' => 'required|numeric',
         'uas' => 'required|numeric',
         'tugas' => 'required|numeric',
     ]);
 
-    // Simpan nilai ke database
+    // Hitung nilai akhir dan grade
     $na = ($request->uts + $request->uas + $request->tugas) / 3;
     $grade = $this->calculateGrade($na);
 
-    $grade = Grade::create([
+    // Simpan nilai ke database
+    Grade::create([
         'student_id' => $request->student_id,
-        'subject' => $request->subject,
+        'mapel_id' => $request->mapel_id,
         'uts' => $request->uts,
         'uas' => $request->uas,
         'tugas' => $request->tugas,
@@ -66,10 +70,10 @@ class NilaiController extends Controller
         'grade' => $grade,
     ]);
 
-    // Redirect ke halaman nilai siswa berdasarkan student_id yang baru ditambahkan
     return redirect()->route('admin.nilai', ['id' => $request->student_id])
                      ->with('success', 'Nilai berhasil ditambahkan');
 }
+
 
     public function edit($id)
     {

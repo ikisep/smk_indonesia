@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Mapel;
+use App\Models\Guru;
 use Illuminate\Http\Request;
 
-class MapelController extends Controller
+class GurusController extends Controller
 {
     public function index()
     {
-        $mapels = Mapel::all();
-        return view('mapel.index', compact('mapels'));
+        $gurus = Guru::all();
+        return view('guru.index', compact('gurus'));
     }
 
     // Show Create Form
     public function create()
     {
-        return view('mapel.create');
+        return view('guru.create');
     }
 
     // Store New Guru
@@ -26,18 +26,18 @@ class MapelController extends Controller
             'nama' => 'required|string|max:255',
         ]);
 
-        Mapel::create([
+        Guru::create([
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('mapel.index')->with('success', 'Guru created successfully.');
+        return redirect()->route('guru.index')->with('success', 'Guru created successfully.');
     }
 
     // Show Edit Form
     public function edit($id)
     {
-        $mapel = Mapel::findOrFail($id);
-        return view('mapel.edit', compact('mapel'));
+        $guru = Guru::findOrFail($id);
+        return view('guru.edit', compact('guru'));
     }
 
     // Update Guru
@@ -47,20 +47,20 @@ class MapelController extends Controller
             'nama' => 'required|string|max:255',
         ]);
 
-        $mapel = Mapel::findOrFail($id);
-        $mapel->update([
+        $guru = Guru::findOrFail($id);
+        $guru->update([
             'nama' => $request->nama,
         ]);
 
-        return redirect()->route('mapel.index')->with('success', 'Guru updated successfully.');
+        return redirect()->route('guru.index')->with('success', 'Guru updated successfully.');
     }
 
     // Delete Guru
     public function destroy($id)
     {
-        $guru = Mapel::findOrFail($id);
+        $guru = Guru::findOrFail($id);
         $guru->delete();
 
-        return redirect()->route('mapel.index')->with('success', 'Guru deleted successfully.');
+        return redirect()->route('guru.index')->with('success', 'Guru deleted successfully.');
     }
 }

@@ -1,4 +1,4 @@
-
+{{-- 
 @extends('layouts.app')
 
 @section('content')
@@ -22,4 +22,4 @@
         </tbody>
     </table>
 </div>
-@endsection
+@endsection --}}

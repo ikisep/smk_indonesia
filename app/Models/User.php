@@ -8,9 +8,8 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
-    protected $fillable = ['name', 'email', 'password', 'role'];
+    protected $fillable = ['name', 'email', 'password', 'role', 'class', 'absen'];
     protected $hidden = ['password'];
-
 
     // Di dalam Model User.php
     // app/Models/User.php

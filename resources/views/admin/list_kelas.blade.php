@@ -1,31 +1,41 @@
 @extends('layouts.app')
 
+@section('title', 'Daftar Kelas')
+
 @section('content')
-    <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">Daftar Kelas</h1>
-        <div class="bg-white shadow-lg rounded-lg p-4">
-            <table class="w-full border-collapse border border-gray-200 rounded-lg overflow-hidden">
-                <thead>
-                    <tr class="bg-gray-100 text-left">
-                        <th class="p-3 border-b">No</th>
-                        <th class="p-3 border-b">Nama Kelas</th>
-                        <th class="p-3 border-b text-center">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($classes as $index => $classItem)
-                        @if (!empty($classItem->class))
-                            <tr class="border-b hover:bg-gray-50">
-                                <td class="p-3">{{ $index + 1 }}</td>
-                                <td class="p-3">{{ $classItem->class }}</td>
-                                <td class="p-3 text-center">
-                                    <a href="{{ route('kelas.show', ['class' => $classItem->class]) }}" class="text-blue-500 hover:underline">Lihat</a>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+<div class="bg-white shadow-md rounded-lg p-6">
+    <div class="flex justify-between items-center border-b pb-4 mb-4">
+        <h2 class="text-xl font-semibold text-gray-700">Daftar Kelas</h2>
+        {{-- <a href="{{ route('kelas.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+            ➕ Tambah Kelas
+        </a> --}}
     </div>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 shadow-sm rounded-lg">
+            <thead class="bg-gray-800 text-white">
+                <tr>
+                    <th class="px-4 py-2 text-left">No</th>
+                    <th class="px-4 py-2 text-left">Nama Kelas</th>
+                    <th class="px-4 py-2 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="text-gray-700">
+                @foreach ($classes as $index => $classItem)
+                    @if (!empty($classItem->class))
+                        <tr class="border-b hover:bg-gray-100">
+                            <td class="px-4 py-2 font-semibold">{{ $index + 1 }}</td>
+                            <td class="px-4 py-2">{{ $classItem->class }}</td>
+                            <td class="px-4 py-2 text-center">
+                                <a href="{{ route('kelas.show', ['class' => $classItem->class]) }}" class="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                                    🔍 Lihat
+                                </a>
+                            </td>
+                        </tr>
+                    @endif
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 @endsection

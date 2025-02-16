@@ -10,14 +10,19 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
+
         if (Auth::attempt($credentials)) {
             $role = Auth::user()->role;
-            if ($role === 'admin' || $role === 'guru') {
+
+            if ($role === 'admin') {
                 return redirect('/admin/kelas');
+            } elseif ($role === 'guru') {
+                return redirect('/murid'); // Akses ke Data Murid
             } else {
                 return redirect('/siswa/nilai');
             }
         }
+
         return back()->withErrors(['email' => 'Email atau password salah']);
     }
 
