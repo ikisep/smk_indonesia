@@ -47,6 +47,7 @@ Route::middleware(['auth', 'role:admin,guru'])->group(function () {
 // Middleware untuk siswa
 Route::middleware(['auth', 'role:siswa'])->group(function () {
     Route::get('/siswa/nilai', [NilaiController::class, 'myGrades'])->name('siswa.nilai');
+    // Route::get('/siswa/gambar', [NilaiController::class, 'myImages'])->name('siswa.gambar');
 });
 
 
@@ -70,4 +71,7 @@ Route::get('/cek-nilai', [NilaiController::class, 'show']);
 Route::resource('users', UsersController::class);
 Route::resource('gallery', GalleryController::class);
 Route::resource('murid', MuridController::class);
+
+Route::get('/nilai/cetak-pdf', [NilaiController::class, 'cetakPDF'])->name('nilai.cetak_pdf');
+
 

@@ -2,7 +2,7 @@
     <!-- Profil User -->
     <div class="flex flex-col items-center p-5 border-b border-gray-700">
         <img src="#" alt="User Avatar" class="w-14 h-14 rounded-full border-2 border-gray-500">
-        <h3 class="text-lg font-semibold mt-2">John David</h3>
+        <h3 class="text-lg font-semibold mt-2">{{ Auth::user()->name }}</h3>
         <span class="text-green-400 text-sm">● Online</span>
     </div>
 

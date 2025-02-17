@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gallery;
 use App\Models\User;
 use App\Models\Grade;
 use App\Models\Mapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+// use Barryvdh\DomPDF\Facade as PDF;
+
 
 class NilaiController extends Controller
 {
@@ -75,12 +78,16 @@ public function store(Request $request)
 }
 
 
-    public function edit($id)
-    {
-        // Form untuk mengedit nilai siswa
-        $grade = Grade::findOrFail($id);
-        return view('admin.edit_nilai', compact('grade'));
-    }
+public function edit($id)
+{
+    // Ambil data nilai siswa beserta relasi ke mapel
+    $grade = Grade::with('mapel')->findOrFail($id);
+    
+    // Ambil semua daftar mata pelajaran untuk dropdown
+    $mapels = Mapel::all();
+
+    return view('admin.edit_nilai', compact('grade', 'mapels'));
+}
 
     public function update(Request $request, $id)
     {
@@ -88,6 +95,7 @@ public function store(Request $request)
         $grade = Grade::findOrFail($id);
         $na = ($request->uts + $request->uas + $request->tugas) / 3;
         $grade->update([
+            'mapel_id' => $request->mapel_id,
             'uts' => $request->uts,
             'uas' => $request->uas,
             'tugas' => $request->tugas,
@@ -95,7 +103,7 @@ public function store(Request $request)
             'grade' => $this->calculateGrade($na),
         ]);
 
-        return redirect()->route('siswa.nilai', $grade->student_id)->with('success', 'Nilai berhasil diperbarui');
+        return redirect()->route('admin.nilai', $grade->student_id)->with('success', 'Nilai berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -134,6 +142,30 @@ public function myGrades()
 
     return view('siswa.nilai', compact('student', 'grades'));
 }
+
+public function myImages()
+{
+    if (!Auth::check()) {
+        return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+    }
+
+    $images = Gallery::all(); // Mengambil semua gambar tanpa filter student_id
+
+    return view('siswa.gambar', compact('images'));
+}
+
+
+// public function cetakPDF()
+// {
+//     $grades = Grade::with(['student', 'mapel'])->get();
+
+//     $pdf = app('dompdf.wrapper')->loadView('admin.cetak_nilai', compact('grades'))->setPaper('a4', 'landscape');
+
+//     return $pdf->stream('Daftar_Nilai.pdf');
+// }
+
+
+
 
 
 }
