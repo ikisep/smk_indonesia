@@ -49,6 +49,10 @@
                                 <a href="{{ route('nilai.edit', $grade->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded-lg hover:bg-yellow-600">
                                     ✏️ Edit
                                 </a>
+
+                                <a href="{{ route('nilai.cetak_pdf') }}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
+                                    🖨 Cetak PDF
+                                </a>   
                                 <form action="{{ route('nilai.destroy', $grade->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')
@@ -56,9 +60,7 @@
                                         ❌ Hapus
                                     </button>
                                 </form>
-                                <a href="{{ route('nilai.cetak_pdf') }}" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">
-                                    🖨 Cetak PDF
-                                </a>
+                                                             
                             </td>
                         </tr>
                     @endforeach

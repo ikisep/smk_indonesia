@@ -8,6 +8,7 @@ use App\Models\Grade;
 use App\Models\Mapel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Barryvdh\DomPDF\Facade\Pdf;
 // use Barryvdh\DomPDF\Facade as PDF;
 
 
@@ -155,16 +156,15 @@ public function myImages()
 }
 
 
-// public function cetakPDF()
-// {
-//     $grades = Grade::with(['student', 'mapel'])->get();
+public function cetakPdf()
+{
+    $grades = Grade::with(['student', 'mapel'])->get();
 
-//     $pdf = app('dompdf.wrapper')->loadView('admin.cetak_nilai', compact('grades'))->setPaper('a4', 'landscape');
+    $pdf = Pdf::loadView('admin.pdf', compact('grades'))
+              ->setPaper('a4', 'landscape'); // Mengatur ukuran kertas dan orientasi
 
-//     return $pdf->stream('Daftar_Nilai.pdf');
-// }
-
-
+    return $pdf->download('daftar_nilai.pdf'); // Mengunduh file PDF langsung
+}
 
 
 
